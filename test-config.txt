@@ -1,0 +1,7 @@
+ESLINT INCLUDES MOCHA COMMANDS
+/* eslint-env mocha */      to be added in the test.js file to let eslint recognise mocha commands
+
+MOCHA RUN COMMAND
+npx mocha test.js           to run the test file given its relative path
+npx mocha                   to run these tests from the project directory
+npx mocha -w                once to run these tests from the project directory each time there is a change in the code 

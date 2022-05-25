@@ -1,0 +1,25 @@
+PACKAGE INSTALLATION
+npm install deep-equal
+npm install --save-dev mocha
+npm install --save-dev wish
+npm install --save-dev eslint
+
+ESLINT CONFIGURATION
+npm init @eslint/config
+> To check syntax, find problemsn and enforce code style
+> CommonJS (require/exports)
+> None of these
+> No
+> Browser and Node <a>
+> Use a popular style guide
+> Standard: https://github.com/standard/standard
+> JSON
+> Yes
+> npm
+
+ESLINT RULES
+"rules": {
+  "semi": ["error", "always"],
+  "array-element-newline":["error", {"minItems": 4}]
+}
+
