@@ -98,8 +98,8 @@ const bulletproof = [
 const songs = [];
 const labels = [];
 const allChords = new Set();
-const labelCounts = [];
-const labelProbabilities = [];
+const labelCounts = {};
+const labelProbabilities = {};
 const chordCountsInLabels = {};
 let probabilityOfChordsInLabels = {};
 
