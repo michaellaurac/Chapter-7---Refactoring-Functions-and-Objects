@@ -96,7 +96,6 @@ const bulletproof = [
 ];
 
 const songs = [];
-const labels = [];
 const allChords = new Set();
 const labelCounts = {};
 const labelProbabilities = {};
@@ -105,7 +104,6 @@ let probabilityOfChordsInLabels = {};
 
 function train (chords, label) {
   songs.push([label, chords]);
-  labels.push(label);
   chords.forEach(chord => allChords.add(chord));
   if (Object.keys(labelCounts).includes(label)) {
     labelCounts[label] = labelCounts[label] + 1;
