@@ -170,24 +170,13 @@ function classify (chords) {
     });
     classified.set(difficulty, first);
   });
-  console.log(classified);
   return classified;
 };
-
-classify([
-  'd',
-  'g',
-  'e',
-  'dm'
-]);
 
 /* eslint-env mocha */
 
 const wish = require('wish');
 describe('the file', function () {
-  it('works', function () {
-    wish(true);
-  });
   it('classifies', function () {
     const classified = classify([
       'f#m7',
