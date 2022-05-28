@@ -156,15 +156,11 @@ function trainAll () {
   train(bulletproof, hard);
 };
 
-trainAll();
-
 function setLabelsAndProbabilities () {
   setLabelProbabilities();
   setChordCountsInLabels();
   setProbabilityOfChordsInLabels();
 };
-
-setLabelsAndProbabilities();
 
 function classify (chords) {
   const smoothing = 1.01;
@@ -189,11 +185,13 @@ describe('the file', function () {
   it('sets welcome message', function () {
     wish(welcomeMessage() === 'Welcome to nb.js!');
   });
+  trainAll();
   it('computes label probabilities', function () {
     wish(labelProbabilities.get('easy') === 0.3333333333333333);
     wish(labelProbabilities.get('medium') === 0.3333333333333333);
     wish(labelProbabilities.get('hard') === 0.3333333333333333);
   });
+  setLabelsAndProbabilities();
   it('classifies', function () {
     const classified = classify([
       'f#m7',
