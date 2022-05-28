@@ -160,7 +160,6 @@ setProbabilityOfChordsInLabels();
 
 function classify (chords) {
   const smoothing = 1.01;
-  console.log(labelProbabilities);
   const classified = new Map();
   labelProbabilities.forEach(function (_probabilities, difficulty) {
     let first = labelProbabilities.get(difficulty) + smoothing;
@@ -181,6 +180,9 @@ const wish = require('wish');
 describe('the file', function () {
   it('sets welcome message', function () {
     wish(welcomeMessage() === 'Welcome to nb.js!');
+  });
+  it('computes label probabilities', function () {
+    console.log(labelProbabilities);
   });
   it('classifies', function () {
     const classified = classify([
