@@ -180,22 +180,23 @@ classify([
   'dm'
 ]);
 
-classify([
-  'f#m7',
-  'a',
-  'dadd9',
-  'dmaj7',
-  'bm',
-  'bm7',
-  'd',
-  'f#m'
-]);
-
 /* eslint-env mocha */
 
 const wish = require('wish');
 describe('the file', function () {
   it('works', function () {
     wish(true);
+  });
+  it('classifies', function () {
+    classify([
+      'f#m7',
+      'a',
+      'dadd9',
+      'dmaj7',
+      'bm',
+      'bm7',
+      'd',
+      'f#m'
+    ]);
   });
 });
