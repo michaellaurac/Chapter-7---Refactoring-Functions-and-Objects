@@ -3,7 +3,9 @@ function fileName () {
   return /\\(\w+\.js):/.exec(theError.stack)[1];
 }
 
-console.log(`Welcome to ${fileName()}!`);
+function welcomeMessage () {
+  return `Welcome to ${fileName()}!`;
+}
 
 const easy = 'easy';
 const medium = 'medium';
@@ -177,6 +179,9 @@ function classify (chords) {
 
 const wish = require('wish');
 describe('the file', function () {
+  it('sets welcome message', function () {
+    wish(welcomeMessage() === 'Welcome to nb.js!');
+  });
   it('classifies', function () {
     const classified = classify([
       'f#m7',
