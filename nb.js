@@ -182,7 +182,9 @@ describe('the file', function () {
     wish(welcomeMessage() === 'Welcome to nb.js!');
   });
   it('computes label probabilities', function () {
-    console.log(labelProbabilities);
+    wish(labelProbabilities.get('easy') === 0.3333333333333333);
+    wish(labelProbabilities.get('medium') === 0.3333333333333333);
+    wish(labelProbabilities.get('hard') === 0.3333333333333333);
   });
   it('classifies', function () {
     const classified = classify([
