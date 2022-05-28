@@ -7,9 +7,11 @@ function welcomeMessage () {
   return `Welcome to ${fileName()}!`;
 };
 
-const easy = 'easy';
-const medium = 'medium';
-const hard = 'hard';
+function setDifficulties () {
+  easy = 'easy';
+  medium = 'medium';
+  hard = 'hard';
+};
 
 function setSongs () {
   imagine = [
@@ -99,12 +101,14 @@ function setSongs () {
   ];
 };
 
-const songs = [];
-const allChords = new Set();
-const labelCounts = new Map();
-const labelProbabilities = new Map();
-const chordCountsInLabels = new Map();
-let probabilityOfChordsInLabels = new Map();
+function setup () {
+  songs = [];
+  allChords = new Set();
+  labelCounts = new Map();
+  labelProbabilities = new Map();
+  chordCountsInLabels = new Map();
+  probabilityOfChordsInLabels = new Map();
+};
 
 function train (chords, label) {
   songs.push({ label, chords });
@@ -147,6 +151,8 @@ function setProbabilityOfChordsInLabels () {
 };
 
 function trainAll () {
+  setDifficulties();
+  setup();
   setSongs();
   train(imagine, easy);
   train(somewhereOverTheRainbow, easy);
