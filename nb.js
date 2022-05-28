@@ -1,11 +1,11 @@
 function fileName () {
   const theError = new Error('here I am');
   return /\\(\w+\.js):/.exec(theError.stack)[1];
-}
+};
 
 function welcomeMessage () {
   return `Welcome to ${fileName()}!`;
-}
+};
 
 const easy = 'easy';
 const medium = 'medium';
@@ -133,7 +133,7 @@ function setChordCountsInLabels () {
       }
     });
   });
-}
+};
 
 function setProbabilityOfChordsInLabels () {
   probabilityOfChordsInLabels = chordCountsInLabels;
@@ -142,21 +142,29 @@ function setProbabilityOfChordsInLabels () {
       probabilityOfChordsInLabels.get(difficulty)[chord] /= songs.length;
     });
   });
-}
+};
 
-train(imagine, easy);
-train(somewhereOverTheRainbow, easy);
-train(tooManyCooks, easy);
-train(iWillFollowYouIntoTheDark, medium);
-train(babyOneMoreTime, medium);
-train(creep, medium);
-train(paperBag, hard);
-train(toxic, hard);
-train(bulletproof, hard);
+function trainAll () {
+  train(imagine, easy);
+  train(somewhereOverTheRainbow, easy);
+  train(tooManyCooks, easy);
+  train(iWillFollowYouIntoTheDark, medium);
+  train(babyOneMoreTime, medium);
+  train(creep, medium);
+  train(paperBag, hard);
+  train(toxic, hard);
+  train(bulletproof, hard);
+};
 
-setLabelProbabilities();
-setChordCountsInLabels();
-setProbabilityOfChordsInLabels();
+trainAll();
+
+function setLabelsAndProbabilities () {
+  setLabelProbabilities();
+  setChordCountsInLabels();
+  setProbabilityOfChordsInLabels();
+};
+
+setLabelsAndProbabilities();
 
 function classify (chords) {
   const smoothing = 1.01;
