@@ -190,3 +190,12 @@ classify([
   'd',
   'f#m'
 ]);
+
+/* eslint-env mocha */
+
+const wish = require('wish');
+describe('the file', function () {
+  it('works', function () {
+    wish(true);
+  });
+});
