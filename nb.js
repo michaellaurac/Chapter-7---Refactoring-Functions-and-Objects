@@ -1,3 +1,14 @@
+const classifier = {
+  setup: function () {
+    this.songs = [];
+    this.allChords = new Set();
+    this.labelCounts = new Map();
+    this.labelProbabilities = new Map();
+    this.chordCountsInLabels = new Map();
+    this.probabilityOfChordsInLabels = new Map();
+  }
+};
+
 function fileName () {
   const theError = new Error('here I am');
   return /\\(\w+\.js):/.exec(theError.stack)[1];
@@ -101,58 +112,49 @@ function setSongs () {
   ];
 };
 
-function setup () {
-  songs = [];
-  allChords = new Set();
-  labelCounts = new Map();
-  labelProbabilities = new Map();
-  chordCountsInLabels = new Map();
-  probabilityOfChordsInLabels = new Map();
-};
-
 function train (chords, label) {
-  songs.push({ label, chords });
-  chords.forEach(chord => allChords.add(chord));
-  if (Array.from(labelCounts.keys()).includes(label)) {
-    labelCounts.set(label, labelCounts.get(label) + 1);
+  classifier.songs.push({ label, chords });
+  chords.forEach(chord => classifier.allChords.add(chord));
+  if (Array.from(classifier.labelCounts.keys()).includes(label)) {
+    classifier.labelCounts.set(label, classifier.labelCounts.get(label) + 1);
   } else {
-    labelCounts.set(label, 1);
+    classifier.labelCounts.set(label, 1);
   }
 };
 
 function setLabelProbabilities () {
-  labelCounts.forEach(function (_count, label) {
-    labelProbabilities.set(label, labelCounts.get(label) / songs.length);
+  classifier.labelCounts.forEach(function (_count, label) {
+    classifier.labelProbabilities.set(label, classifier.labelCounts.get(label) / classifier.songs.length);
   });
 };
 
 function setChordCountsInLabels () {
-  songs.forEach(function (song) {
-    if (chordCountsInLabels.get(song.label) === undefined) {
-      chordCountsInLabels.set(song.label, {});
+  classifier.songs.forEach(function (song) {
+    if (classifier.chordCountsInLabels.get(song.label) === undefined) {
+      classifier.chordCountsInLabels.set(song.label, {});
     }
     song.chords.forEach(function (chord) {
-      if (chordCountsInLabels.get(song.label)[chord] > 0) {
-        chordCountsInLabels.get(song.label)[chord] += 1;
+      if (classifier.chordCountsInLabels.get(song.label)[chord] > 0) {
+        classifier.chordCountsInLabels.get(song.label)[chord] += 1;
       } else {
-        chordCountsInLabels.get(song.label)[chord] = 1;
+        classifier.chordCountsInLabels.get(song.label)[chord] = 1;
       }
     });
   });
 };
 
 function setProbabilityOfChordsInLabels () {
-  probabilityOfChordsInLabels = chordCountsInLabels;
-  probabilityOfChordsInLabels.forEach(function (_chords, difficulty) {
-    Object.keys(probabilityOfChordsInLabels.get(difficulty)).forEach(function (chord) {
-      probabilityOfChordsInLabels.get(difficulty)[chord] /= songs.length;
+  classifier.probabilityOfChordsInLabels = classifier.chordCountsInLabels;
+  classifier.probabilityOfChordsInLabels.forEach(function (_chords, difficulty) {
+    Object.keys(classifier.probabilityOfChordsInLabels.get(difficulty)).forEach(function (chord) {
+      classifier.probabilityOfChordsInLabels.get(difficulty)[chord] /= classifier.songs.length;
     });
   });
 };
 
 function trainAll () {
+  classifier.setup();
   setDifficulties();
-  setup();
   setSongs();
   train(imagine, easy);
   train(somewhereOverTheRainbow, easy);
@@ -175,10 +177,10 @@ function setLabelsAndProbabilities () {
 function classify (chords) {
   const smoothing = 1.01;
   const classified = new Map();
-  labelProbabilities.forEach(function (_probabilities, difficulty) {
-    let first = labelProbabilities.get(difficulty) + smoothing;
+  classifier.labelProbabilities.forEach(function (_probabilities, difficulty) {
+    let first = classifier.labelProbabilities.get(difficulty) + smoothing;
     chords.forEach(function (chord) {
-      const probabilityOfChordInLabel = probabilityOfChordsInLabels.get(difficulty)[chord];
+      const probabilityOfChordInLabel = classifier.probabilityOfChordsInLabels.get(difficulty)[chord];
       if (probabilityOfChordInLabel) {
         first = first * (probabilityOfChordInLabel + smoothing);
       }
@@ -197,9 +199,9 @@ describe('the file', function () {
   });
   trainAll();
   it('computes label probabilities', function () {
-    wish(labelProbabilities.get('easy') === 0.3333333333333333);
-    wish(labelProbabilities.get('medium') === 0.3333333333333333);
-    wish(labelProbabilities.get('hard') === 0.3333333333333333);
+    wish(classifier.labelProbabilities.get('easy') === 0.3333333333333333);
+    wish(classifier.labelProbabilities.get('medium') === 0.3333333333333333);
+    wish(classifier.labelProbabilities.get('hard') === 0.3333333333333333);
   });
   it('classifies', function () {
     const classified = classify([
