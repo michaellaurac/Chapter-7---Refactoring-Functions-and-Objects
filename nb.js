@@ -154,6 +154,7 @@ function trainAll () {
   train(paperBag, hard);
   train(toxic, hard);
   train(bulletproof, hard);
+  setLabelsAndProbabilities();
 };
 
 function setLabelsAndProbabilities () {
@@ -191,7 +192,6 @@ describe('the file', function () {
     wish(labelProbabilities.get('medium') === 0.3333333333333333);
     wish(labelProbabilities.get('hard') === 0.3333333333333333);
   });
-  setLabelsAndProbabilities();
   it('classifies', function () {
     const classified = classify([
       'f#m7',
