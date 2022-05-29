@@ -97,24 +97,6 @@ function setLabelsAndProbabilities () {
   setProbabilityOfChordsInLabels();
 };
 
-function classify (chords) {
-  const smoothing = 1.01;
-  const classified = new Map();
-  classifier.labelProbabilities.forEach(function (_probabilities, difficulty) {
-    const totalLikelihood = chords.reduce(function (total, chord) {
-      const probabilityOfChordInLabel = classifier.probabilityOfChordsInLabels.get(difficulty)[chord];
-      if (probabilityOfChordInLabel) {
-        return total * (probabilityOfChordInLabel + smoothing);
-      } else {
-        return total;
-      }
-    }, classifier.labelProbabilities.get(difficulty) + smoothing);
-
-    classified.set(difficulty, totalLikelihood);
-  });
-  return classified;
-};
-
 /* eslint-env mocha */
 
 const wish = require('wish');
