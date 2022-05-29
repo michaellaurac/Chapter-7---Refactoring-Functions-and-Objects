@@ -20,9 +20,6 @@ const classifier = {
   }
 };
 
-
-        
-
 function fileName () {
   const theError = new Error('here I am');
   return /\\(\w+\.js):/.exec(theError.stack)[1];
@@ -37,8 +34,8 @@ const songList = {
   songs: [],
   addSong: function (name, chords, difficulty) {
     this.songs.push({
-      name: name,
-      chords: chords,
+      name,
+      chords,
       difficulty: this.difficulties[difficulty]
     });
   }
