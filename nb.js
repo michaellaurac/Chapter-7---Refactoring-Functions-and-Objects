@@ -17,9 +17,9 @@ const classifier = {
         } else {
           return total;
         }
-      }, self.labelProbabilities.get(difficulty) + smoothing);
+      }, this.labelProbabilities.get(difficulty) + smoothing);
       classified.set(difficulty, totalLikelihood);
-    });
+    }, this);
     return classified;
   }
 };
