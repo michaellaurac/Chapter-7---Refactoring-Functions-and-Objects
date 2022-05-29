@@ -22,8 +22,19 @@ function setDifficulties () {
   hard = 'hard';
 };
 
+const songList = {
+  songs: [],
+  addSong: function (name, chords, difficulty) {
+    this.songs.push({
+      name: name,
+      chords: chords,
+      difficulty: difficulty
+    });
+  }
+};
+
 function setSongs () {
-  imagine = [
+  songList.addSong('imagine', [
     'c',
     'cmaj7',
     'f',
@@ -31,37 +42,37 @@ function setSongs () {
     'dm',
     'g',
     'e7'
-  ];
+  ], easy);
 
-  somewhereOverTheRainbow = [
+  songList.addSong('somewhereOverTheRainbow', [
     'c',
     'em',
     'f',
     'g',
     'am'
-  ];
+  ], easy);
 
-  tooManyCooks = ['c', 'g', 'f'];
+  songList.addSong('tooManyCooks', ['c', 'g', 'f'], easy);
 
-  iWillFollowYouIntoTheDark = [
+  songList.addSong('iWillFollowYouIntoTheDark', [
     'f',
     'dm',
     'bb',
     'c',
     'a',
     'bbm'
-  ];
+  ], medium);
 
-  babyOneMoreTime = [
+  songList.addSong('babyOneMoreTime', [
     'cm',
     'g',
     'bb',
     'eb',
     'fm',
     'ab'
-  ];
+  ], medium);
 
-  creep = [
+  songList.addSong('creep', [
     'g',
     'gsus4',
     'b',
@@ -69,9 +80,9 @@ function setSongs () {
     'c',
     'cmsus4',
     'cm6'
-  ];
+  ], medium);
 
-  paperBag = [
+  songList.addSong('paperBag', [
     'bm7',
     'e',
     'c',
@@ -85,9 +96,9 @@ function setSongs () {
     'a7',
     'f7',
     'b'
-  ];
+  ], hard);
 
-  toxic = [
+  songList.addSong('toxic', [
     'cm',
     'eb',
     'g',
@@ -98,16 +109,16 @@ function setSongs () {
     'ab',
     'gmaj7',
     'g7'
-  ];
+  ], hard);
 
-  bulletproof = [
+  songList.addSong('bulletproof', [
     'd#m',
     'g#',
     'b',
     'f#',
     'g#m',
     'c#'
-  ];
+  ], hard);
 };
 
 function train (chords, label) {
@@ -153,15 +164,9 @@ function setProbabilityOfChordsInLabels () {
 function trainAll () {
   setDifficulties();
   setSongs();
-  train(imagine, easy);
-  train(somewhereOverTheRainbow, easy);
-  train(tooManyCooks, easy);
-  train(iWillFollowYouIntoTheDark, medium);
-  train(babyOneMoreTime, medium);
-  train(creep, medium);
-  train(paperBag, hard);
-  train(toxic, hard);
-  train(bulletproof, hard);
+  songList.songs.forEach(function (song) {
+    train(song.chords, song.difficulty);
+  });
   setLabelsAndProbabilities();
 };
 
