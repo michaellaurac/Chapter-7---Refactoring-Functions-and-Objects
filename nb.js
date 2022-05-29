@@ -16,19 +16,14 @@ function welcomeMessage () {
   return `Welcome to ${fileName()}!`;
 };
 
-function setDifficulties () {
-  easy = 'easy';
-  medium = 'medium';
-  hard = 'hard';
-};
-
 const songList = {
+  difficulties: ['easy', 'medium', 'hard'],
   songs: [],
   addSong: function (name, chords, difficulty) {
     this.songs.push({
       name: name,
       chords: chords,
-      difficulty: difficulty
+      difficulty: this.difficulties[difficulty]
     });
   }
 };
@@ -42,7 +37,7 @@ function setSongs () {
     'dm',
     'g',
     'e7'
-  ], easy);
+  ], 0);
 
   songList.addSong('somewhereOverTheRainbow', [
     'c',
@@ -50,9 +45,9 @@ function setSongs () {
     'f',
     'g',
     'am'
-  ], easy);
+  ], 0);
 
-  songList.addSong('tooManyCooks', ['c', 'g', 'f'], easy);
+  songList.addSong('tooManyCooks', ['c', 'g', 'f'], 0);
 
   songList.addSong('iWillFollowYouIntoTheDark', [
     'f',
@@ -61,7 +56,7 @@ function setSongs () {
     'c',
     'a',
     'bbm'
-  ], medium);
+  ], 1);
 
   songList.addSong('babyOneMoreTime', [
     'cm',
@@ -70,7 +65,7 @@ function setSongs () {
     'eb',
     'fm',
     'ab'
-  ], medium);
+  ], 1);
 
   songList.addSong('creep', [
     'g',
@@ -80,7 +75,7 @@ function setSongs () {
     'c',
     'cmsus4',
     'cm6'
-  ], medium);
+  ], 1);
 
   songList.addSong('paperBag', [
     'bm7',
@@ -96,7 +91,7 @@ function setSongs () {
     'a7',
     'f7',
     'b'
-  ], hard);
+  ], 2);
 
   songList.addSong('toxic', [
     'cm',
@@ -109,7 +104,7 @@ function setSongs () {
     'ab',
     'gmaj7',
     'g7'
-  ], hard);
+  ], 2);
 
   songList.addSong('bulletproof', [
     'd#m',
@@ -118,7 +113,7 @@ function setSongs () {
     'f#',
     'g#m',
     'c#'
-  ], hard);
+  ], 2);
 };
 
 function train (chords, label) {
@@ -162,7 +157,6 @@ function setProbabilityOfChordsInLabels () {
 };
 
 function trainAll () {
-  setDifficulties();
   setSongs();
   songList.songs.forEach(function (song) {
     train(song.chords, song.difficulty);
