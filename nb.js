@@ -1,4 +1,8 @@
 const classifier = {
+  labelCounts: new Map(),
+  labelProbabilities: new Map(),
+  chordCountsInLabels: new Map(),
+  smoothing: 1.01,
   songList: {
     allChords: new Set(),
     difficulties: ['easy', 'medium', 'hard'],
@@ -11,10 +15,23 @@ const classifier = {
       });
     }
   },
-  labelCounts: new Map(),
-  labelProbabilities: new Map(),
-  chordCountsInLabels: new Map(),
-  smoothing: 1.01,
+  chordCountForDifficulty: function (difficulty, testChord) {
+    return this.songList.songs.reduce(function (counter, song) {
+      if (song.difficulty === difficulty) {
+        counter += song.chords.filter(function (chord) {
+          return chord === testChord;
+        }).length;
+      }
+      return counter;
+    }, 0);
+  },
+  likelihoodFromChord: function (difficulty, chord) {
+    return this.chordCountForDifficulty(difficulty, chord) / this.songList.songs.length;
+  },
+  valueForChordDifficulty: function (difficulty, chord) {
+    const value = this.likelihoodFromChord(difficulty, chord);
+    return value ? value + this.smoothing : 1;
+  },
   trainAll: function () {
     this.songList.songs.forEach(function (song) {
       this.train(song.chords, song.difficulty);
@@ -33,23 +50,6 @@ const classifier = {
     this.labelCounts.forEach(function (_count, label) {
       this.labelProbabilities.set(label, this.labelCounts.get(label) / this.songList.songs.length);
     }, this);
-  },
-  chordCountForDifficulty: function (difficulty, testChord) {
-    return this.songList.songs.reduce(function (counter, song) {
-      if (song.difficulty === difficulty) {
-        counter += song.chords.filter(function (chord) {
-          return chord === testChord;
-        }).length;
-      }
-      return counter;
-    }, 0);
-  },
-  likelihoodFromChord: function (difficulty, chord) {
-    return this.chordCountForDifficulty(difficulty, chord) / this.songList.songs.length;
-  },
-  valueForChordDifficulty: function (difficulty, chord) {
-    const value = this.likelihoodFromChord(difficulty, chord);
-    return value ? value + this.smoothing : 1;
   },
   classify: function (chords) {
     return new Map(Array.from(this.labelProbabilities.entries()).map((labelWithProbability) => {
