@@ -7,7 +7,7 @@ const classifier = {
     allChords: new Set(),
     difficulties: ['easy', 'medium', 'hard'],
     songs: [],
-    addSong: function (name, chords, difficulty) {
+    addSong (name, chords, difficulty) {
       this.songs.push({
         name,
         chords,
@@ -15,43 +15,41 @@ const classifier = {
       });
     }
   },
-  chordCountForDifficulty: function (difficulty, testChord) {
+  chordCountForDifficulty (difficulty, testChord) {
     return this.songList.songs.reduce((counter, song) => {
       if (song.difficulty === difficulty) {
-        counter += song.chords.filter(chord => {
-          return chord === testChord;
-        }).length;
+        counter += song.chords.filter(chord => chord === testChord).length;
       }
       return counter;
     }, 0);
   },
-  likelihoodFromChord: function (difficulty, chord) {
+  likelihoodFromChord (difficulty, chord) {
     return this.chordCountForDifficulty(difficulty, chord) / this.songList.songs.length;
   },
-  valueForChordDifficulty: function (difficulty, chord) {
+  valueForChordDifficulty (difficulty, chord) {
     const value = this.likelihoodFromChord(difficulty, chord);
     return value ? value + this.smoothing : 1;
   },
-  trainAll: function () {
+  trainAll () {
     this.songList.songs.forEach(song => {
       this.train(song.chords, song.difficulty);
     });
     this.setLabelProbabilities();
   },
-  train: function (chords, label) {
-    chords.forEach(chord => { this.songList.allChords.add(chord); });
+  train (chords, label) {
+    chords.forEach(chord => this.songList.allChords.add(chord));
     if (Array.from(this.labelCounts.keys()).includes(label)) {
       this.labelCounts.set(label, this.labelCounts.get(label) + 1);
     } else {
       this.labelCounts.set(label, 1);
     }
   },
-  setLabelProbabilities: function () {
+  setLabelProbabilities () {
     this.labelCounts.forEach((_count, label) => {
       this.labelProbabilities.set(label, this.labelCounts.get(label) / this.songList.songs.length);
     });
   },
-  classify: function (chords) {
+  classify (chords) {
     return new Map(Array.from(this.labelProbabilities.entries()).map(labelWithProbability => {
       const difficulty = labelWithProbability[0];
       return [difficulty, chords.reduce((total, chord) => {
@@ -61,12 +59,12 @@ const classifier = {
   }
 };
 
-function fileName () {
+const fileName = () => {
   const theError = new Error('here I am');
   return /\\(\w+\.js):/.exec(theError.stack)[1];
 };
 
-function welcomeMessage () {
+const welcomeMessage = () => {
   return `Welcome to ${fileName()}!`;
 };
 
