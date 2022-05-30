@@ -5,7 +5,6 @@ const classifier = {
   chordCountsInLabels: new Map(),
   smoothing: 1.01,
   chordCountForDifficulty: function (difficulty, testChord) {
-    let counter = 0;
     return songList.songs.reduce(function (counter, song) {
       if (song.difficulty === difficulty) {
         song.chords.forEach(function (chord) {
