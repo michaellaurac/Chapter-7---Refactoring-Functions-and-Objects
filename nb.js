@@ -4,6 +4,25 @@ const classifier = {
   labelProbabilities: new Map(),
   chordCountsInLabels: new Map(),
   smoothing: 1.01,
+  trainAll: function () {
+    songList.songs.forEach(function (song) {
+      this.train(song.chords, song.difficulty);
+    }, this);
+    this.setLabelProbabilities();
+  },
+  train: function (chords, label) {
+    chords.forEach(chord => { this.allChords.add(chord); });
+    if (Array.from(this.labelCounts.keys()).includes(label)) {
+      this.labelCounts.set(label, this.labelCounts.get(label) + 1);
+    } else {
+      this.labelCounts.set(label, 1);
+    }
+  },
+  setLabelProbabilities: function () {
+    this.labelCounts.forEach(function (_count, label) {
+      this.labelProbabilities.set(label, this.labelCounts.get(label) / songList.songs.length);
+    }, this);
+  },
   chordCountForDifficulty: function (difficulty, testChord) {
     return songList.songs.reduce(function (counter, song) {
       if (song.difficulty === difficulty) {
@@ -52,28 +71,6 @@ const songList = {
   }
 };
 
-function train (chords, label) {
-  chords.forEach(chord => classifier.allChords.add(chord));
-  if (Array.from(classifier.labelCounts.keys()).includes(label)) {
-    classifier.labelCounts.set(label, classifier.labelCounts.get(label) + 1);
-  } else {
-    classifier.labelCounts.set(label, 1);
-  }
-};
-
-function setLabelProbabilities () {
-  classifier.labelCounts.forEach(function (_count, label) {
-    classifier.labelProbabilities.set(label, classifier.labelCounts.get(label) / songList.songs.length);
-  });
-};
-
-function trainAll () {
-  songList.songs.forEach(function (song) {
-    train(song.chords, song.difficulty);
-  });
-  setLabelProbabilities();
-};
-
 /* eslint-env mocha */
 
 const wish = require('wish');
@@ -90,7 +87,7 @@ describe('the file', function () {
   songList.addSong('paperBag', ['bm7', 'e', 'c', 'g', 'b7', 'f', 'em', 'a', 'cmaj7', 'em7', 'a7', 'f7', 'b'], 2);
   songList.addSong('toxic', ['cm', 'eb', 'g', 'cdim', 'eb7', 'd7', 'db7', 'ab', 'gmaj7', 'g7'], 2);
   songList.addSong('bulletproof', ['d#m', 'g#', 'b', 'f#', 'g#m', 'c#'], 2);
-  trainAll();
+  classifier.trainAll();
   it('computes label probabilities', function () {
     wish(classifier.labelProbabilities.get('easy') === 0.3333333333333333);
     wish(classifier.labelProbabilities.get('medium') === 0.3333333333333333);
