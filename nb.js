@@ -5,6 +5,13 @@ const classifier = {
   labelProbabilities: new Map(),
   chordCountsInLabels: new Map(),
   smoothing: 1.01,
+  setProbabilityOfChordsInLabels: function () {
+    this.chordCountsInLabels.forEach(function (_chords, difficulty) {
+      Object.keys(this.chordCountsInLabels.get(difficulty)).forEach(function (chord) {
+        this.chordCountsInLabels.get(difficulty)[chord] /= classifier.songs.length;
+      }, this);
+    }, this);
+  },
   valueForChordDifficulty: function (difficulty, chord) {
     const value = this.chordCountsInLabels.get(difficulty)[chord];
     return value ? value + this.smoothing : 1;
@@ -71,14 +78,6 @@ function setChordCountsInLabels () {
   });
 };
 
-function setProbabilityOfChordsInLabels () {
-  classifier.chordCountsInLabels.forEach(function (_chords, difficulty) {
-    Object.keys(classifier.chordCountsInLabels.get(difficulty)).forEach(function (chord) {
-      classifier.chordCountsInLabels.get(difficulty)[chord] /= classifier.songs.length;
-    });
-  });
-};
-
 function trainAll () {
   songList.songs.forEach(function (song) {
     train(song.chords, song.difficulty);
@@ -89,7 +88,7 @@ function trainAll () {
 function setLabelsAndProbabilities () {
   setLabelProbabilities();
   setChordCountsInLabels();
-  setProbabilityOfChordsInLabels();
+  classifier.setProbabilityOfChordsInLabels();
 };
 
 /* eslint-env mocha */
