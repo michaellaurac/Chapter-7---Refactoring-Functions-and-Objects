@@ -7,11 +7,9 @@ const classifier = {
   chordCountForDifficulty: function (difficulty, testChord) {
     return songList.songs.reduce(function (counter, song) {
       if (song.difficulty === difficulty) {
-        song.chords.forEach(function (chord) {
-          if (chord === testChord) {
-            counter++;
-          }
-        });
+        counter += song.chords.filter(function (chord) {
+          return chord === testChord;
+        }).length;
       }
       return counter;
     }, 0);
