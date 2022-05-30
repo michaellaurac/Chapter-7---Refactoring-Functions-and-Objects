@@ -4,6 +4,20 @@ const classifier = {
   labelProbabilities: new Map(),
   chordCountsInLabels: new Map(),
   smoothing: 1.01,
+  setChordCountsInLabels: function () {
+    songList.songs.forEach(function (song) {
+      if (this.chordCountsInLabels.get(song.difficulty) === undefined) {
+        this.chordCountsInLabels.set(song.difficulty, {});
+      }
+      song.chords.forEach(function (chord) {
+        if (this.chordCountsInLabels.get(song.difficulty)[chord] > 0) {
+          this.chordCountsInLabels.get(song.difficulty)[chord] += 1;
+        } else {
+          this.chordCountsInLabels.get(song.difficulty)[chord] = 1;
+        }
+      }, this);
+    }, this);
+  },
   likelihoodFromChord: function (difficulty, chord) {
     return this.chordCountsInLabels.get(difficulty)[chord] / songList.songs.length;
   },
@@ -57,21 +71,6 @@ function setLabelProbabilities () {
   });
 };
 
-function setChordCountsInLabels () {
-  songList.songs.forEach(function (song) {
-    if (classifier.chordCountsInLabels.get(song.difficulty) === undefined) {
-      classifier.chordCountsInLabels.set(song.difficulty, {});
-    }
-    song.chords.forEach(function (chord) {
-      if (classifier.chordCountsInLabels.get(song.difficulty)[chord] > 0) {
-        classifier.chordCountsInLabels.get(song.difficulty)[chord] += 1;
-      } else {
-        classifier.chordCountsInLabels.get(song.difficulty)[chord] = 1;
-      }
-    });
-  });
-};
-
 function trainAll () {
   songList.songs.forEach(function (song) {
     train(song.chords, song.difficulty);
@@ -81,7 +80,7 @@ function trainAll () {
 
 function setLabelsAndProbabilities () {
   setLabelProbabilities();
-  setChordCountsInLabels();
+  classifier.setChordCountsInLabels();
 };
 
 /* eslint-env mocha */
