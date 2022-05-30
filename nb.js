@@ -18,7 +18,7 @@ const classifier = {
   chordCountForDifficulty: function (difficulty, testChord) {
     return this.songList.songs.reduce((counter, song) => {
       if (song.difficulty === difficulty) {
-        counter += song.chords.filter((chord) => {
+        counter += song.chords.filter(chord => {
           return chord === testChord;
         }).length;
       }
@@ -33,7 +33,7 @@ const classifier = {
     return value ? value + this.smoothing : 1;
   },
   trainAll: function () {
-    this.songList.songs.forEach((song) => {
+    this.songList.songs.forEach(song => {
       this.train(song.chords, song.difficulty);
     });
     this.setLabelProbabilities();
@@ -52,7 +52,7 @@ const classifier = {
     });
   },
   classify: function (chords) {
-    return new Map(Array.from(this.labelProbabilities.entries()).map((labelWithProbability) => {
+    return new Map(Array.from(this.labelProbabilities.entries()).map(labelWithProbability => {
       const difficulty = labelWithProbability[0];
       return [difficulty, chords.reduce((total, chord) => {
         return total * this.valueForChordDifficulty(difficulty, chord);
@@ -73,8 +73,8 @@ function welcomeMessage () {
 /* eslint-env mocha */
 
 const wish = require('wish');
-describe('the file', function () {
-  it('sets welcome message', function () {
+describe('the file', () => {
+  it('sets welcome message', () => {
     wish(welcomeMessage() === 'Welcome to nb.js!');
   });
   classifier.songList.addSong('imagine', ['c', 'cmaj7', 'f', 'am', 'dm', 'g', 'e7'], 0);
@@ -87,18 +87,18 @@ describe('the file', function () {
   classifier.songList.addSong('toxic', ['cm', 'eb', 'g', 'cdim', 'eb7', 'd7', 'db7', 'ab', 'gmaj7', 'g7'], 2);
   classifier.songList.addSong('bulletproof', ['d#m', 'g#', 'b', 'f#', 'g#m', 'c#'], 2);
   classifier.trainAll();
-  it('computes label probabilities', function () {
+  it('computes label probabilities', () => {
     wish(classifier.labelProbabilities.get('easy') === 0.3333333333333333);
     wish(classifier.labelProbabilities.get('medium') === 0.3333333333333333);
     wish(classifier.labelProbabilities.get('hard') === 0.3333333333333333);
   });
-  it('classifies', function () {
+  it('classifies', () => {
     const classified = classifier.classify(['f#m7', 'a', 'dadd9', 'dmaj7', 'bm', 'bm7', 'd', 'f#m']);
     wish(classified.get('easy') === 1.3433333333333333);
     wish(classified.get('medium') === 1.5060259259259259);
     wish(classified.get('hard') === 1.6884223991769547);
   });
-  it('classifies again', function () {
+  it('classifies again', () => {
     const classified = classifier.classify(['d', 'g', 'e', 'dm']);
     wish(classified.get('easy') === 2.023094827160494);
     wish(classified.get('medium') === 1.855758613168724);
