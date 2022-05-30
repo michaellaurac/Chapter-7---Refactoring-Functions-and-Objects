@@ -16,9 +16,9 @@ const classifier = {
     }
   },
   chordCountForDifficulty: function (difficulty, testChord) {
-    return this.songList.songs.reduce(function (counter, song) {
+    return this.songList.songs.reduce((counter, song) => {
       if (song.difficulty === difficulty) {
-        counter += song.chords.filter(function (chord) {
+        counter += song.chords.filter((chord) => {
           return chord === testChord;
         }).length;
       }
@@ -33,9 +33,9 @@ const classifier = {
     return value ? value + this.smoothing : 1;
   },
   trainAll: function () {
-    this.songList.songs.forEach(function (song) {
+    this.songList.songs.forEach((song) => {
       this.train(song.chords, song.difficulty);
-    }, this);
+    });
     this.setLabelProbabilities();
   },
   train: function (chords, label) {
@@ -47,9 +47,9 @@ const classifier = {
     }
   },
   setLabelProbabilities: function () {
-    this.labelCounts.forEach(function (_count, label) {
+    this.labelCounts.forEach((_count, label) => {
       this.labelProbabilities.set(label, this.labelCounts.get(label) / this.songList.songs.length);
-    }, this);
+    });
   },
   classify: function (chords) {
     return new Map(Array.from(this.labelProbabilities.entries()).map((labelWithProbability) => {
