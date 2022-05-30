@@ -74,10 +74,6 @@ function trainAll () {
   songList.songs.forEach(function (song) {
     train(song.chords, song.difficulty);
   });
-  setLabelsAndProbabilities();
-};
-
-function setLabelsAndProbabilities () {
   setLabelProbabilities();
 };
 
