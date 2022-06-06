@@ -18,6 +18,10 @@ class Classifier {
     this.smoothing = 1.01;
   };
 
+  addSong (name, chords, difficulty) {
+    this.songList.addSong(name, chords, difficulty);
+  };
+
   chordCountForDifficulty (difficulty, testChord) {
     return this.songList.songs.reduce((counter, song) => {
       if (song.difficulty === difficulty) {
@@ -85,15 +89,15 @@ describe('the file', () => {
     wish(welcomeMessage() === 'Welcome to nb.js!');
   });
   const classifier = new Classifier();
-  classifier.songList.addSong('imagine', ['c', 'cmaj7', 'f', 'am', 'dm', 'g', 'e7'], 0);
-  classifier.songList.addSong('somewhereOverTheRainbow', ['c', 'em', 'f', 'g', 'am'], 0);
-  classifier.songList.addSong('tooManyCooks', ['c', 'g', 'f'], 0);
-  classifier.songList.addSong('iWillFollowYouIntoTheDark', ['f', 'dm', 'bb', 'c', 'a', 'bbm'], 1);
-  classifier.songList.addSong('babyOneMoreTime', ['cm', 'g', 'bb', 'eb', 'fm', 'ab'], 1);
-  classifier.songList.addSong('creep', ['g', 'gsus4', 'b', 'bsus4', 'c', 'cmsus4', 'cm6'], 1);
-  classifier.songList.addSong('paperBag', ['bm7', 'e', 'c', 'g', 'b7', 'f', 'em', 'a', 'cmaj7', 'em7', 'a7', 'f7', 'b'], 2);
-  classifier.songList.addSong('toxic', ['cm', 'eb', 'g', 'cdim', 'eb7', 'd7', 'db7', 'ab', 'gmaj7', 'g7'], 2);
-  classifier.songList.addSong('bulletproof', ['d#m', 'g#', 'b', 'f#', 'g#m', 'c#'], 2);
+  classifier.addSong('imagine', ['c', 'cmaj7', 'f', 'am', 'dm', 'g', 'e7'], 0);
+  classifier.addSong('somewhereOverTheRainbow', ['c', 'em', 'f', 'g', 'am'], 0);
+  classifier.addSong('tooManyCooks', ['c', 'g', 'f'], 0);
+  classifier.addSong('iWillFollowYouIntoTheDark', ['f', 'dm', 'bb', 'c', 'a', 'bbm'], 1);
+  classifier.addSong('babyOneMoreTime', ['cm', 'g', 'bb', 'eb', 'fm', 'ab'], 1);
+  classifier.addSong('creep', ['g', 'gsus4', 'b', 'bsus4', 'c', 'cmsus4', 'cm6'], 1);
+  classifier.addSong('paperBag', ['bm7', 'e', 'c', 'g', 'b7', 'f', 'em', 'a', 'cmaj7', 'em7', 'a7', 'f7', 'b'], 2);
+  classifier.addSong('toxic', ['cm', 'eb', 'g', 'cdim', 'eb7', 'd7', 'db7', 'ab', 'gmaj7', 'g7'], 2);
+  classifier.addSong('bulletproof', ['d#m', 'g#', 'b', 'f#', 'g#m', 'c#'], 2);
   classifier.trainAll();
   it('computes label probabilities', () => {
     wish(classifier.labelProbabilities.get('easy') === 0.3333333333333333);
