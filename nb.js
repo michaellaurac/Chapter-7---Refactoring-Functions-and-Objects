@@ -1,4 +1,4 @@
-class Classifier {
+module.exports = class Classifier {
   constructor () {
     this._songList = {
       allChords: new Set(),
@@ -71,14 +71,3 @@ class Classifier {
     }));
   };
 };
-
-const fileName = () => {
-  const theError = new Error('here I am');
-  return /\\(\w+\.js):/.exec(theError.stack)[1];
-};
-
-const welcomeMessage = () => {
-  return `Welcome to ${fileName()}!`;
-};
-
-module.exports = { Classifier, welcomeMessage };
