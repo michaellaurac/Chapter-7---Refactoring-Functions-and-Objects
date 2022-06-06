@@ -16,7 +16,25 @@ describe('the file', () => {
     wish(welcomeMessage() === 'Welcome to nb_words_test.js!');
   });
   const classifier = new Classifier();
-  classifier.addText('english text', ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q'], 0);
+  classifier.addText('english text', [
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'g',
+    'h',
+    'i',
+    'j',
+    'k',
+    'l',
+    'm',
+    'n',
+    'o',
+    'p',
+    'q']
+  , 0);
   classifier.addText('japanese text', ['あ', 'い', 'う', 'え', 'お', 'か', 'き', 'く', 'け', 'こ'], 1);
   classifier.trainAll();
   it('computes label probabilities', () => {
