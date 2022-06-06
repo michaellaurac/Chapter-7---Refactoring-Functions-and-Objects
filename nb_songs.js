@@ -14,7 +14,6 @@ module.exports = class Classifier {
     };
     this._labelCounts = new Map();
     this._labelProbabilities = new Map();
-    this.chordCountsInLabels = new Map();
     this._smoothing = 1.01;
   };
 

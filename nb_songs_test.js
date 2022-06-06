@@ -9,11 +9,11 @@ const welcomeMessage = () => {
 
 /* eslint-env mocha */
 
-const Classifier = require('./nb.js');
+const Classifier = require('./nb_songs.js');
 const wish = require('wish');
 describe('the file', () => {
   it('sets welcome message', () => {
-    wish(welcomeMessage() === 'Welcome to nb_test.js!');
+    wish(welcomeMessage() === 'Welcome to nb_songs_test.js!');
   });
   const classifier = new Classifier();
   classifier.addSong('imagine', ['c', 'cmaj7', 'f', 'am', 'dm', 'g', 'e7'], 0);
